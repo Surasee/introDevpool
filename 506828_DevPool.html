@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEA Digital Leader Presentation - สุรสีห์ น้อยมหาไวย</title>
+    
+    <!-- Google Fonts: Kanit (Headings) & Sarabun (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           CORE VARIABLES & SETUP (PEA THEME)
+           ========================================================================== */
+        :root {
+            --pea-purple: #74045f;
+            --pea-purple-light: #9a1a82;
+            --pea-gold: #c7911b;
+            --pea-gold-light: #eab332;
+            --bg-color: #f4f6f9;
+            --text-dark: #1e293b;
+            --text-gray: #475569;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #cbd5e1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Sarabun', sans-serif;
+            overflow: hidden;
+        }
+
+        /* 16:9 Slide Container */
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: var(--white);
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border-radius: 16px;
+            overflow: hidden;
+            /* Tech background pattern */
+            background-image: radial-gradient(rgba(116, 4, 95, 0.05) 2px, transparent 2px);
+            background-size: 30px 30px;
+        }
+
+        /* Top Accent Bar */
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--pea-purple) 0%, var(--pea-gold) 50%, var(--pea-purple) 100%);
+            z-index: 10;
+        }
+
+        /* Slide Wrapper */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 60px 80px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: translateY(20px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            z-index: 5;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: 'Kanit', sans-serif;
+            color: var(--pea-purple);
+        }
+
+        .slide-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            border-left: 6px solid var(--pea-gold);
+            padding-left: 20px;
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .slide-title i {
+            color: var(--pea-gold);
+        }
+
+        /* Navigation Controls */
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn {
+            background: var(--pea-purple);
+            color: var(--white);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: var(--pea-gold);
+        }
+
+        .counter {
+            font-family: 'Kanit', sans-serif;
+            font-weight: 600;
+            color: var(--pea-purple);
+            font-size: 18px;
+        }
+
+        /* ==========================================================================
+           SLIDE 1: COVER
+           ========================================================================== */
+        .cover-layout {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cover-left {
+            width: 55%;
+            padding-right: 40px;
+        }
+
+        .cover-left h1 {
+            font-size: 52px;
+            line-height: 1.3;
+            margin-bottom: 10px;
+        }
+
+        .cover-left h1 span {
+            font-size: 32px;
+            color: var(--pea-gold);
+            font-weight: 500;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .cover-left h2 {
+            font-size: 24px;
+            color: var(--text-gray);
+            font-weight: 400;
+            margin-bottom: 40px;
+        }
+
+        .profile-box {
+            background: var(--bg-color);
+            border-left: 4px solid var(--pea-purple);
+            padding: 20px 25px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 40px;
+        }
+
+        .profile-box p {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .profile-box p strong {
+            color: var(--pea-purple);
+            display: inline-block;
+            width: 140px;
+        }
+
+        .motto {
+            font-family: 'Kanit', sans-serif;
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--pea-purple) 0%, var(--pea-purple-light) 100%);
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(116, 4, 95, 0.3);
+            border-bottom: 4px solid var(--pea-gold);
+        }
+
+        .cover-right {
+            width: 40%;
+            height: 80%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Decoration behind image */
+        .cover-right::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: var(--pea-gold);
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: 1;
+        }
+        .cover-right::after {
+            content: '';
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border: 2px dashed var(--pea-purple);
+            border-radius: 50%;
+            z-index: 1;
+            animation: spin 30s linear infinite;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .cover-img {
+            width: 380px;
+            height: 480px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+            position: relative;
+            border: 4px solid var(--white);
+        }
+
+        /* ==========================================================================
+           SLIDE 2: PROFILE & SKILLS
+           ========================================================================== */
+        .skills-layout {
+            display: flex;
+            gap: 50px;
+            height: 100%;
+        }
+
+        .skills-left {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .edu-card {
+            background: var(--bg-color);
+            padding: 30px;
+            border-radius: 16px;
+            border-top: 4px solid var(--pea-gold);
+            margin-top: 20px;
+        }
+        
+        .edu-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .edu-card p {
+            font-size: 20px;
+            line-height: 1.6;
+        }
+
+        .skills-right {
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            padding-top: 20px;
+        }
+
+        .skill-item {
+            background: var(--white);
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: transform 0.3s;
+        }
+
+        .skill-item:hover {
+            transform: translateX(10px);
+            border-color: var(--pea-purple);
+        }
+
+        .skill-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(116, 4, 95, 0.1);
+            color: var(--pea-purple);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .skill-content h4 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .skill-content p {
+            font-size: 18px;
+            color: var(--text-gray);
+            line-height: 1.5;
+        }
+
+        /* ==========================================================================
+           SLIDE 3: CAREER PATH
+           ========================================================================== */
+        .timeline-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 60px auto 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 50px;
+            left: 5%;
+            width: 90%;
+            height: 4px;
+            background: #cbd5e1;
+            z-index: 1;
+        }
+
+        .timeline-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step {
+            width: 22%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .step-dot {
+            width: 24px;
+            height: 24px;
+            background: var(--white);
+            border: 4px solid var(--pea-purple);
+            border-radius: 50%;
+            margin-bottom: 20px;
+            margin-top: 40px;
+            transition: all 0.3s;
+        }
+
+        .step.highlight .step-dot {
+            width: 32px;
+            height: 32px;
+            border-color: var(--pea-gold);
+            background: var(--pea-purple);
+            margin-top: 36px;
+            box-shadow: 0 0 0 6px rgba(199, 145, 27, 0.2);
+        }
+
+        .step-year {
+            font-family: 'Kanit', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--pea-purple);
+            margin-bottom: 10px;
+        }
+
+        .step.highlight .step-year {
+            color: var(--pea-gold);
+            font-size: 28px;
+        }
+
+        .step-title {
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .step-desc {
+            font-size: 16px;
+            color: var(--text-gray);
+            line-height: 1.4;
+        }
+
+        .step:nth-child(even) .step-dot {
+            margin-top: 0;
+            margin-bottom: 40px;
+        }
+        
+        .step:nth-child(even) {
+            flex-direction: column-reverse;
+        }
+
+        /* ==========================================================================
+           SLIDE 4: MASTERPIECES
+           ========================================================================== */
+        .masterpiece-top {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .award-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: linear-gradient(90deg, #fef3c7 0%, #fef08a 100%);
+            padding: 15px 40px;
+            border-radius: 50px;
+            color: #854d0e;
+            font-family: 'Kanit', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            border: 2px solid var(--pea-gold);
+            box-shadow: 0 10px 15px -3px rgba(199, 145, 27, 0.2);
+        }
+
+        .award-badge i { font-size: 32px; }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .impact-card {
+            background: var(--bg-color);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            border-bottom: 4px solid var(--pea-purple);
+            transition: transform 0.3s;
+        }
+
+        .impact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .impact-icon {
+            font-size: 40px;
+            color: var(--pea-gold);
+            margin-bottom: 20px;
+        }
+
+        .bignum {
+            font-family: 'Kanit', sans-serif;
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--pea-purple);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .impact-card h4 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .impact-card p {
+            font-size: 16px;
+            color: var(--text-gray);
+        }
+
+        /* ==========================================================================
+           SLIDE 5: DIGITAL OP STRATEGY
+           ========================================================================== */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            height: 80%;
+            align-content: center;
+        }
+
+        .strat-card {
+            background: var(--white);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 35px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+        }
+
+        .strat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 6px; height: 100%;
+            background: var(--pea-purple);
+        }
+
+        .strat-card:nth-child(even)::before {
+            background: var(--pea-gold);
+        }
+
+        .strat-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .strat-header i {
+            font-size: 32px;
+            color: var(--pea-purple);
+            background: rgba(116, 4, 95, 0.1);
+            width: 60px; height: 60px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+        }
+
+        .strat-card:nth-child(even) .strat-header i {
+            color: var(--pea-gold);
+            background: rgba(199, 145, 27, 0.1);
+        }
+
+        .strat-card h3 {
+            font-size: 26px;
+        }
+
+        .strat-card p {
+            font-size: 19px;
+            line-height: 1.6;
+            color: var(--text-gray);
+        }
+
+        /* ==========================================================================
+           SLIDE 6: VISION & LEADERSHIP
+           ========================================================================== */
+        .pillars-container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            height: 60%;
+        }
+
+        .pillar {
+            flex: 1;
+            background: var(--bg-color);
+            padding: 40px 30px;
+            border-radius: 16px;
+            text-align: center;
+            border-top: 6px solid var(--pea-purple);
+        }
+
+        .pillar:nth-child(2) { border-color: var(--pea-gold); }
+
+        .pillar-icon {
+            font-size: 50px;
+            color: var(--pea-purple);
+            margin-bottom: 20px;
+        }
+        .pillar:nth-child(2) .pillar-icon { color: var(--pea-gold); }
+
+        .pillar h3 {
+            font-size: 26px;
+            margin-bottom: 15px;
+        }
+
+        .pillar p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--text-gray);
+        }
+
+        .cta-banner {
+            background: var(--pea-purple);
+            color: var(--white);
+            text-align: center;
+            padding: 25px;
+            border-radius: 12px;
+            font-family: 'Kanit', sans-serif;
+            font-size: 26px;
+            font-weight: 600;
+            box-shadow: 0 10px 15px -3px rgba(116, 4, 95, 0.4);
+            border-left: 8px solid var(--pea-gold);
+            border-right: 8px solid var(--pea-gold);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="slide-container">
+        
+        <!-- Slide 1: Cover Slide -->
+        <div class="slide active" id="slide-1">
+            <div class="cover-layout">
+                <div class="cover-left">
+                    <h1>วิสัยทัศน์เพื่อการขับเคลื่อนและยกระดับเทคโนโลยีดิจิทัล กฟภ.<br>
+                        <span>(Vision for Digital Transformation)</span>
+                    </h1>
+                    <h2>นำเสนอวิสัยทัศน์และผลงานเพื่อรับการคัดเลือกตำแหน่ง "หัวหน้าแผนก"</h2>
+                    
+                    <div class="profile-box">
+                        <p><strong>ชื่อ-สกุล:</strong> นายสุรสีห์ น้อยมหาไวย (รหัสพนักงาน 506828)</p>
+                        <p><strong>ตำแหน่งปัจจุบัน:</strong> นักระบบงานคอมพิวเตอร์ ระดับ 7</p>
+                        <p><strong>สังกัด:</strong> แผนกระบบสารสนเทศและความปลอดภัยไซเบอร์ (ต1)</p>
+                    </div>
+
+                    <div class="motto">
+                        <i class="fa-solid fa-quote-left" style="color: var(--pea-gold); opacity: 0.5; margin-right: 10px;"></i>
+                        ยกระดับงานด้วย AI ขับเคลื่อนด้วย Data ให้บริการด้วยใจ ยึดมั่นประโยชน์องค์กรเป็นที่ตั้ง
+                    </div>
+                </div>
+                <div class="cover-right">
+                    <!-- ใช้รูปที่ระบุ พร้อมกรอบที่สวยงาม -->
+                    <img src="56-1.png" alt="นายสุรสีห์ น้อยมหาไวย" class="cover-img">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Profile & Core Skills -->
+        <div class="slide" id="slide-2">
+            <h2 class="slide-title"><i class="fa-solid fa-id-card"></i> Profile & Core Skills</h2>
+            <div class="skills-layout">
+                <div class="skills-left">
+                    <img src="56.png" alt="Profile" style="width: 100%; height: 350px; object-fit: contain; border-radius: 16px; border: 3px solid var(--pea-purple);">
+                    <div class="edu-card">
+                        <h3><i class="fa-solid fa-graduation-cap"></i> การศึกษา</h3>
+                        <p>วิทยาศาสตรบัณฑิต<br><strong>(วิทยาการคอมพิวเตอร์)</strong><br>มหาวิทยาลัยราชภัฏเพชรบุรี</p>
+                    </div>
+                </div>
+                <div class="skills-right">
+                    <div class="skill-item">
+                        <div class="skill-icon"><i class="fa-solid fa-brain"></i></div>
+                        <div class="skill-content">
+                            <h4>AI & Automation</h4>
+                            <p>ประยุกต์ใช้ AI Pro (ChatGPT+, Gemini Pro, Claude) และ Multipurpose AI Workflow (n8n) เพื่อลดขั้นตอนการทำงาน</p>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon"><i class="fa-solid fa-code"></i></div>
+                        <div class="skill-content">
+                            <h4>Programming & Data</h4>
+                            <p>Full-stack Development (HTML, PHP, JAVA, Python, SQL) และ Data Visualization (Tableau, Power BI)</p>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div class="skill-content">
+                            <h4>Cyber Security</h4>
+                            <p>บริหารจัดการตามมาตรฐาน ISO/IEC 27001, DevSecOps และทักษะด้าน Secure Coding</p>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon"><i class="fa-solid fa-server"></i></div>
+                        <div class="skill-content">
+                            <h4>IT Infrastructure</h4>
+                            <p>เชี่ยวชาญด้านฮาร์ดแวร์ การถอด-ประกอบ และวิเคราะห์ปัญหาโครงสร้างพื้นฐานคอมพิวเตอร์อย่างลึกซึ้ง</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Career Path -->
+        <div class="slide" id="slide-3">
+            <h2 class="slide-title"><i class="fa-solid fa-route"></i> Career Path - Proven Track Record</h2>
+            
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+                <div class="timeline-steps">
+                    
+                    <div class="step">
+                        <div class="step-dot"></div>
+                        <div class="step-year">2560-2563</div>
+                        <div class="step-title">นรค. ระดับ 4-5</div>
+                        <div class="step-desc">แผนกสารสนเทศด้านบริการลูกค้า / ด้านการจัดการองค์กร<br><em>ปูพื้นฐานความเข้าใจระบบงานและบริการ</em></div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-dot"></div>
+                        <div class="step-year">2564-2567</div>
+                        <div class="step-title">นรค. ระดับ 6</div>
+                        <div class="step-desc">แผนกระบบสารสนเทศและความปลอดภัยไซเบอร์<br><em>เชี่ยวชาญด้านระบบและความมั่นคงปลอดภัย</em></div>
+                    </div>
+
+                    <div class="step highlight">
+                        <div class="step-dot"></div>
+                        <div class="step-year">2567-2569</div>
+                        <div class="step-title">ผู้ช่วยหัวหน้าแผนก</div>
+                        <div class="step-desc">แผนกระบบสารสนเทศฯ และ แผนกปฏิบัติการดิจิทัล<br><em>สั่งสมประสบการณ์บริหารคนและระบบงานส่วนภูมิภาค</em></div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-dot"></div>
+                        <div class="step-year">ปัจจุบัน</div>
+                        <div class="step-title">นรค. ระดับ 7</div>
+                        <div class="step-desc">แผนกระบบสารสนเทศและความปลอดภัยไซเบอร์<br><em>พร้อมเต็มที่สำหรับการเป็น "หัวหน้าแผนก" อย่างเต็มรูปแบบ</em></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Nationwide Masterpieces -->
+        <div class="slide" id="slide-4">
+            <h2 class="slide-title"><i class="fa-solid fa-trophy"></i> Nationwide Masterpieces - High Impact Results</h2>
+            
+            <div class="masterpiece-top">
+                <div class="award-badge">
+                    <i class="fa-solid fa-medal"></i> รางวัลสูงสุด: พนักงานดีเด่น ประจำปี 2565
+                </div>
+            </div>
+
+            <div class="impact-grid">
+                <!-- Card 1 -->
+                <div class="impact-card">
+                    <div class="impact-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
+                    <h4>National Impact Project</h4>
+                    <div class="bignum">940+</div>
+                    <p>พัฒนาและดูแลระบบ QueueX ใช้งานจริงกว่า 940 แห่งทั่วประเทศ ควบคุมเครื่องคิวกว่า 750 เครื่อง</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="impact-card">
+                    <div class="impact-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                    <h4>Data & Security Impact</h4>
+                    <div class="bignum">AI/Data</div>
+                    <p>พัฒนาระบบตรวจสอบข้อมูลอัจฉริยะ เพื่อตรวจจับการละเมิดใช้ไฟฟ้า (ขบวนการลักลอบขุด Bitcoin)</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="impact-card">
+                    <div class="impact-icon"><i class="fa-solid fa-award"></i></div>
+                    <h4>Award-Winning Systems</h4>
+                    <div class="bignum">Gold</div>
+                    <p>รางวัลนวัตกรรมองค์กร (เหรียญทอง/ทองแดง) จากระบบ QueueX, eDoc Plus และระบบปรับปรุงค่าไฟฟ้าอัจฉริยะ<br><br><em>(ดูแลระบบหลัก: SmartQueue, Wesafe, TFM, PEAClub, ETSx)</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Digital Operations Strategy -->
+        <div class="slide" id="slide-5">
+            <h2 class="slide-title"><i class="fa-solid fa-network-wired"></i> Digital Operations Strategy - แผนกปฏิบัติการดิจิทัล</h2>
+            
+            <div class="strategy-grid">
+                <div class="strat-card">
+                    <div class="strat-header">
+                        <i class="fa-solid fa-eye"></i>
+                        <h3>Pain Point Resolution</h3>
+                    </div>
+                    <p><strong>แก้ปัญหาตรงจุด:</strong> จัดการความท้าทายในการดูแลพนักงานกระจายตัวตาม กฟฟ.สาขา ด้วยระบบติดตามงาน (Monitoring System) ที่โปร่งใสและตรวจสอบได้จริง</p>
+                </div>
+
+                <div class="strat-card">
+                    <div class="strat-header">
+                        <i class="fa-solid fa-gavel"></i>
+                        <h3>Discipline & Integrity</h3>
+                    </div>
+                    <p><strong>ระเบียบวินัยและสุจริต:</strong> บังคับใช้กฎระเบียบอย่างเป็นธรรม เด็ดขาดในการแก้ปัญหา ยึดมั่นผลประโยชน์ขององค์กรเป็นอันดับหนึ่งโดยไม่เบียดเบียนพนักงาน</p>
+                </div>
+
+                <div class="strat-card">
+                    <div class="strat-header">
+                        <i class="fa-solid fa-handshake-angle"></i>
+                        <h3>HQ Network & Team</h3>
+                    </div>
+                    <p><strong>เครือข่ายแข็งแกร่ง:</strong> ใช้คอนเน็กชันกับส่วนกลางเพื่อเร่งรัดข้อมูลด่วน และมีเครือข่ายทีมงานข้ามเขตที่พร้อมทำงานเชิงรุกชนทุกอุปสรรค</p>
+                </div>
+
+                <div class="strat-card">
+                    <div class="strat-header">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                        <h3>Coaching & Upskilling</h3>
+                    </div>
+                    <p><strong>ยกระดับทีมงาน:</strong> ทำหน้าที่เป็น Mentor ปั้นบุคลากรหน้างานให้เขียนโปรแกรมและใช้ AI ช่วยทำงาน เพื่อแก้ปัญหา "พนักงานขาดความรู้" ได้อย่างยั่งยืน</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Vision & Leadership -->
+        <div class="slide" id="slide-6">
+            <h2 class="slide-title"><i class="fa-solid fa-lightbulb"></i> Vision & Leadership - The Future Leader</h2>
+            
+            <div class="pillars-container">
+                <div class="pillar">
+                    <div class="pillar-icon"><i class="fa-solid fa-robot"></i></div>
+                    <h3>Automation First</h3>
+                    <p>นำ AI Agent และ Workflow (เช่น n8n) มาลดขั้นตอนการทำงานซ้ำซ้อนแทนมนุษย์ เพื่อลดข้อผิดพลาดและเพิ่มความเร็วในการบริการ</p>
+                </div>
+                
+                <div class="pillar">
+                    <div class="pillar-icon"><i class="fa-solid fa-shield-virus"></i></div>
+                    <h3>Secure & Data-Driven</h3>
+                    <p>ทุกระบบและกระบวนงานต้องขับเคลื่อนด้วยข้อมูลจริง (Data-Driven) ภายใต้มาตรฐานความปลอดภัยสูงสุดแบบ DevSecOps</p>
+                </div>
+
+                <div class="pillar">
+                    <div class="pillar-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                    <h3>Rush to Service & Empathy</h3>
+                    <p>ให้บริการไร้รอยต่อ บริหารคนด้วยความเข้าใจ (Empathy) ฟื้นฟูกำลังใจทีมงาน พร้อมสนับสนุนและให้บริการเพื่อนพนักงานแม้นอกเวลาราชการ</p>
+                </div>
+            </div>
+
+            <div class="cta-banner">
+                "พร้อมเป็นฟันเฟืองสำคัญที่นำพาความเปลี่ยนแปลงเชิงบวก และบริหารปัญหาของผู้บริหารให้จบอย่างสวยงาม"
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="controls">
+            <button class="btn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+            <span class="counter" id="slideCounter">1 / 6</span>
+            <button class="btn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+    </div>
+
+    <!-- Navigation Script -->
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const counter = document.getElementById('slideCounter');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            counter.innerText = `${currentSlide + 1} / ${slides.length}`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
+</body>
+</html>
