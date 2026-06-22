@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PEA Digital Leader Presentation - สุรสีห์ น้อยมหาไวย</title>
+    <title>PEA Dev Pool Presentation - สุรสีห์ น้อยมหาไวย</title>
     
     <!-- Google Fonts: Kanit (Headings) & Sarabun (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1033,16 +1033,33 @@
             </div>
         </div>
 
-        <!-- Slide 5: Q&A -->
+        <!-- Slide 5: Q&A with Google Gemini AI -->
         <div class="slide" id="slide-5">
-            <h2 class="slide-title"><i class="fa-solid fa-circle-question"></i> Q&A - Questions & Answers</h2>
+            <h2 class="slide-title"><i class="fa-solid fa-circle-question"></i> Q&A - Google Gemini AI Agent</h2>
             
-            <div class="qa-container" style="justify-content: center; align-items: center;">
-                <div class="qa-banner" style="flex: 0 1 500px;">
-                    <div class="qa-banner-icon"><i class="fa-solid fa-hand-fist"></i></div>
-                    <div class="qa-banner-text">Q & A</div>
+            <div class="qa-container" style="display: flex; flex-direction: column; gap: 15px; height: 100%; overflow: hidden;">
+                <!-- API Key Input Section -->
+                <div style="background: #fff3cd; padding: 12px 15px; border-radius: 8px; border-left: 4px solid var(--pea-gold); display: flex; gap: 10px; align-items: center; flex-shrink: 0;">
+                    <input type="password" id="googleApiKey" placeholder="ใส่ Google Gemini API Key..." style="flex: 1; padding: 10px 12px; font-size: 14px; border: 1px solid #ffc107; border-radius: 6px; font-family: 'Sarabun', sans-serif;">
+                    <button onclick="toggleApiKeyVisibility()" style="padding: 8px 15px; background: var(--pea-purple); color: white; border: none; border-radius: 6px; cursor: pointer; font-family: 'Kanit', sans-serif; font-size: 12px; flex-shrink: 0;">แสดง</button>
                 </div>
-                <iframe width="320" height="875" src="https://oil-price.bangchak.co.th/BcpOilPrice1/th" frameborder="0"></iframe>
+                
+                <!-- Question Input -->
+                <div style="display: flex; gap: 10px; flex-shrink: 0;">
+                    <input type="text" id="qaInput" placeholder="ถามคำถามเกี่ยวกับ Slide นี้..." style="flex: 1; padding: 12px 15px; font-size: 16px; border: 2px solid var(--pea-purple); border-radius: 8px; font-family: 'Sarabun', sans-serif;">
+                    <button onclick="askEdgeAI()" style="padding: 12px 25px; background: var(--pea-purple); color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'Kanit', sans-serif; font-weight: 600; flex-shrink: 0;">ค้นหา</button>
+                </div>
+                
+                <!-- AI Response Display -->
+                <div id="aiResponse" style="flex: 1; background: var(--bg-color); padding: 20px; border-radius: 12px; border-left: 4px solid var(--pea-gold); overflow-y: auto; min-height: 0; max-height: 500px; display: flex; flex-direction: column;">
+                    <p style="color: var(--text-gray); font-size: 14px;">รอการค้นหา...</p>
+                </div>
+                
+                <!-- Loading Indicator -->
+                <div id="loadingSpinner" style="display: none; text-align: center; flex-shrink: 0;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: var(--pea-purple);"></i>
+                    <p style="margin-top: 10px; color: var(--pea-purple);">กำลังประมวลผล...</p>
+                </div>
             </div>
         </div>
 
@@ -1093,6 +1110,157 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // ========== Edge AI Offline Q&A Function ==========
+        const pageData = {
+            slides: [],
+            keywords: {}
+        };
+
+        function extractPageContent() {
+            // Extract all text content from the page
+            const slides = document.querySelectorAll('.slide');
+            let allContent = '';
+            
+            slides.forEach((slide, index) => {
+                const text = slide.innerText || slide.textContent;
+                pageData.slides.push({
+                    number: index + 1,
+                    content: text
+                });
+                allContent += text + ' ';
+            });
+            
+            // Build keyword index
+            const words = allContent.toLowerCase().match(/\b[\w\u0E00-\u0E7F]+\b/g) || [];
+            words.forEach(word => {
+                if (word.length > 2) {
+                    pageData.keywords[word] = (pageData.keywords[word] || 0) + 1;
+                }
+            });
+        }
+
+        function searchInContent(query) {
+            const queryLower = query.toLowerCase();
+            let results = [];
+            
+            // Search in each slide
+            pageData.slides.forEach(slide => {
+                const contentLower = slide.content.toLowerCase();
+                
+                // Find relevant sentences
+                const sentences = slide.content.match(/[^.!?]+[.!?]+/g) || [];
+                sentences.forEach(sentence => {
+                    if (contentLower.includes(queryLower)) {
+                        results.push({
+                            slide: slide.number,
+                            text: sentence.trim()
+                        });
+                    }
+                });
+            });
+            
+            return results;
+        }
+
+        function generateAnswer(answer) {
+            return answer;
+        }
+
+        function toggleApiKeyVisibility() {
+            const apiKeyInput = document.getElementById('googleApiKey');
+            if (apiKeyInput.type === 'password') {
+                apiKeyInput.type = 'text';
+            } else {
+                apiKeyInput.type = 'password';
+            }
+        }
+
+        async function askEdgeAI() {
+            const question = document.getElementById('qaInput').value.trim();
+            const apiKey = document.getElementById('googleApiKey').value.trim();
+            const responseDiv = document.getElementById('aiResponse');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            if (!apiKey) {
+                responseDiv.innerHTML = '<p style="color: #d32f2f; font-weight: 600;"><i class="fas fa-exclamation-circle"></i> กรุณาใส่ Google Gemini API Key ก่อน</p>';
+                return;
+            }
+
+            if (!question) {
+                responseDiv.innerHTML = '<p style="color: var(--text-gray);">กรุณาใส่คำถาม</p>';
+                return;
+            }
+
+            loadingSpinner.style.display = 'block';
+            responseDiv.innerHTML = '';
+
+            try {
+                // Extract page content if not already done
+                if (pageData.slides.length === 0) {
+                    extractPageContent();
+                }
+                
+                // Build context from all slides
+                let context = 'ข้อมูลจาก Presentation:\n\n';
+                pageData.slides.forEach((slide, idx) => {
+                    context += `--- Slide ${slide.number} ---\n${slide.content}\n\n`;
+                });
+
+                // Call Google Gemini API with user-provided key
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: `คุณคือผู้ช่วยตอบคำถามเกี่ยวกับ Presentation นี้\n\n${context}\n\nคำถาม: ${question}\n\nโปรดตอบคำถามโดยอ้างอิงข้อมูลจากใน Presentation เท่านั้น`
+                            }]
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error?.message || `API Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const answer = data.candidates[0].content.parts[0].text;
+
+                responseDiv.innerHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 12px; font-size: 15px; overflow-y: auto;">
+                        <p style="font-weight: 600; color: var(--pea-purple); margin: 0;"><i class="fas fa-question-circle"></i> <strong>คำถาม:</strong> ${question}</p>
+                        <div style="border-top: 1px solid #d0d7e0; padding-top: 12px; color: var(--text-dark); line-height: 1.7; white-space: pre-wrap; word-break: break-word;">
+                            ${answer}
+                        </div>
+                        <p style="color: #999; font-size: 12px; margin: 10px 0 0 0; border-top: 1px solid #e0e0e0; padding-top: 8px;"><i class="fas fa-brain"></i> ตอบจาก Google Gemini AI</p>
+                    </div>
+                `;
+            } catch (error) {
+                responseDiv.innerHTML = `
+                    <p style="color: #d32f2f; font-weight: 600;"><i class="fas fa-exclamation-circle"></i> เกิดข้อผิดพลาด</p>
+                    <p style="color: var(--text-gray); font-size: 14px;">${error.message}</p>
+                    <p style="color: var(--text-gray); font-size: 12px; margin-top: 10px;">โปรดตรวจสอบ API Key และการเชื่อมต่อ Internet</p>
+                `;
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        }
+
+        // Allow Enter key to submit question
+        document.addEventListener('DOMContentLoaded', () => {
+            const qaInput = document.getElementById('qaInput');
+            if (qaInput) {
+                qaInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        askEdgeAI();
+                    }
+                });
+            }
         });
     </script>
 </body>
